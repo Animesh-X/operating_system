@@ -19,7 +19,7 @@ int main(int argc,char *argv[]){
 
     int fileDes2=open(argv[2],O_WRONLY | O_CREAT, 0644);
     if (fileDes2<0) {
-        perror("Error opening/creating File2!!");
+        perror("Error creating File2!!");
         exit(1);
     }
     // https://stackoverflow.com/questions/7861611/can-someone-explain-what-dup-in-c-does
@@ -56,9 +56,9 @@ int main(int argc,char *argv[]){
             wait(NULL);
         }
         else if(pid2==0){   // second child, it will write to the pipe
-            close(1);   // close the standard output
-            dup(fd[1]); // duplicate the standard out to write end of pipe
-            // dup2(fd[1],1);   alternate to dup and close
+            // close(1);   // close the standard output
+            // dup(fd[1]); // duplicate the standard out to write end of pipe
+            dup2(fd[1],1);   //alternate to dup and close
             close(fd[0]);   // close the read end of pipe
             execl("/Users/apple/Desktop/Code/Operating_System/Assignment_1/convert","convert",(char*)NULL);
             perror("Error executing count");
